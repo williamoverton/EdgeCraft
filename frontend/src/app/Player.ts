@@ -12,6 +12,8 @@ export default class Player {
   scale: number;
   entity: Entity;
   world: World;
+  avatar: number;
+  id: string;
 
   constructor(app: Application, scale: number, world: World) {
     this.app = app;
@@ -22,8 +24,14 @@ export default class Player {
     this.x = 1000;
     this.y = 100;
 
+    this.avatar = Math.floor(Math.random() * 10);
+
+    this.id = `${Math.random()}`
+
     this.make();
     this.tick();
+
+    this.updatePosition()
   }
 
   make() {
@@ -32,8 +40,8 @@ export default class Player {
     const playerSprite = new Texture(
       playerSpriteSheet,
       new Rectangle(
-        Math.floor(Math.random() * 5) * 16,
-        Math.floor(Math.random() * 2) * 16,
+        (this.avatar % 5) * 16,
+        (this.avatar % 2) * 16,
         16,
         16
       )
@@ -44,6 +52,12 @@ export default class Player {
     this.entity.sprite.anchor.x = 0.5;
     this.entity.sprite.zIndex = 9999;
     this.app.stage.addChild(this.entity.sprite);
+
+    this.entity.dynamic = false;
+
+    setTimeout(() => {
+      this.entity.dynamic = true;
+    }, 2000)
 
     console.log("Making Player!");
   }
@@ -69,6 +83,9 @@ export default class Player {
     //Physics
     this.entity.tick();
 
+    this.x = this.entity.sprite.x;
+    this.y = this.entity.sprite.y;
+
     // Camera
     this.app.stage.pivot.x = this.entity.sprite.x;
     this.app.stage.pivot.y = this.entity.sprite.y;
@@ -89,5 +106,22 @@ export default class Player {
         tile.setType(TileType.AIR);
       }
     }
+  }
+
+  async updatePosition() {
+    await fetch(`${(window as any).APP_BACKEND_URL}`, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "updatePlayer",
+        options: {
+          id: this.id,
+          x: this.x,
+          y: this.y,
+          avatar: this.avatar
+        },
+      }),
+    });
+
+    setTimeout(() => this.updatePosition(), 50);
   }
 }

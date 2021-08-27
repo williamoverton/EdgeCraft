@@ -1,17 +1,17 @@
 import * as aws4 from "aws4";
 
 export default class Dynamodb {
-
-  async setChunk(x, y, chunkData){
-    let data = chunkData.map(c => {
-      return {S: c}});
+  async setChunk(x, y, chunkData) {
+    let data = chunkData.map((c) => {
+      return { S: c };
+    });
 
     await this.makeRequest("UpdateItem", {
       TableName: "edgecraft-chunks",
       Key: {
         pos: {
           S: `${x}@${y}`,
-        }
+        },
       },
       ExpressionAttributeValues: {
         ":chunkData": { L: data },
@@ -20,36 +20,83 @@ export default class Dynamodb {
     });
   }
 
-  async updateTile(cx, cy, tx, ty, type){
+  async updateTile(cx, cy, tx, ty, type) {
     await this.makeRequest("UpdateItem", {
       TableName: "edgecraft-chunks",
       Key: {
         pos: {
           S: `${cx}@${cy}`,
-        }
+        },
       },
       ExpressionAttributeValues: {
         ":type": { S: type },
       },
-      UpdateExpression: `SET chunkData[${tx + (ty * 16)}] = :type`,
+      UpdateExpression: `SET chunkData[${tx + ty * 16}] = :type`,
     });
   }
 
-  async getChunk(x, y){
-    let data = (await this.makeRequest("GetItem", {
-      TableName: "edgecraft-chunks",
-      Key: {
-        pos: {
-          S: `${x}@${y}`,
-        }
-      }
-    })).Item;
+  async getChunk(x, y) {
+    let data = (
+      await this.makeRequest("GetItem", {
+        TableName: "edgecraft-chunks",
+        Key: {
+          pos: {
+            S: `${x}@${y}`,
+          },
+        },
+      })
+    ).Item;
 
-    if(!data){
+    if (!data) {
       return null;
     }
 
-    return data.chunkData.L.map(v => v.S);
+    return data.chunkData.L.map((v) => v.S);
+  }
+
+  async updatePlayer(id, x, y, avatar, lastseen) {
+    let data = {
+      x: {
+        N: `${x}`,
+      },
+      y: {
+        N: `${y}`,
+      },
+      avatar: {
+        N: `${avatar}`
+      }
+    };
+
+    return await this.makeRequest("UpdateItem", {
+      TableName: "edgecraft-players",
+      Key: {
+        player: {
+          S: id,
+        },
+      },
+      ExpressionAttributeValues: {
+        ":lastseen": { N: `${lastseen}` },
+        ":playerData": {
+          M: data
+        }
+      },
+      UpdateExpression: "SET lastseen = :lastseen, playerData = :playerData",
+    });
+  }
+
+  async getPlayers(){
+    let players = (await this.makeRequest("Scan", {
+      TableName: "edgecraft-players"
+    })).Items;
+
+    return players.map(p => {
+      return {
+        id: p.player.S,
+        x: p.playerData.M.x.N,
+        y: p.playerData.M.y.N,
+        avatar: p.playerData.M.avatar.N,
+      }
+    })
   }
 
   // let resp = (await this.makeRequest("GetItem", {

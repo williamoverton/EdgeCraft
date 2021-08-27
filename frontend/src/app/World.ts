@@ -19,8 +19,8 @@ export default class World {
   buildWorld(): void {
     // const dirtTexture = loader.resources.dirt.texture as Texture<Resource>;
 
-    for (let y = 1; y < 4; y += 1) {
-      for (let x = -3; x < 6; x += 1) {
+    for (let y = -2; y < 2; y += 1) {
+      for (let x = -2; x < 2; x += 1) {
 
         if(this.chunks[y] == undefined){
           this.chunks[y] = {};

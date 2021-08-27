@@ -9,6 +9,7 @@ import {
 
 import World from "./app/World";
 import Player from "./app/Player";
+import OnlinePlayers from "./app/OnlinePlayers";
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -52,6 +53,7 @@ loader.load(() => {
 
   const world = new World(app, scale);
   const player = new Player(app, scale, world);
+  new OnlinePlayers(app, scale, player);
 
   ticker.add(() => {
     player.tick();
