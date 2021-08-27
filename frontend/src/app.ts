@@ -34,6 +34,8 @@ const ticker = Ticker.shared;
 // preload needed assets
 loader.add("grass", "/assets/img/grass.png");
 loader.add("dirt", "/assets/img/dirt.png");
+loader.add("brick", "/assets/img/brick.png");
+loader.add("dark_brick", "/assets/img/dark_brick.png");
 loader.add("playerSpriteSheet", "/assets/img/pirate_people.png");
 
 // when loader is ready
@@ -43,6 +45,8 @@ loader.load(() => {
   fps.scale.set(0.7, 0.7);
   fps.zIndex = 9999;
   app.stage.addChild(fps);
+
+  app.stage.sortableChildren = true;
 
   const scale = 5;
 

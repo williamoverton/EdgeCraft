@@ -9,5 +9,9 @@ name = "edgecraft"
 service_id = ""
 
 [local_server]
-
-  [local_server.backends]
+  [local_server.backends.aws_dynamodb]
+      url = "https://dynamodb.eu-west-2.amazonaws.com"
+  [local_server.dictionaries]
+    [local_server.dictionaries.config]
+      file="./local-dict-config.json"
+      format = "json"

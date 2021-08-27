@@ -42,18 +42,11 @@ export default class Chunk {
     let i = 0;
     for (let y = 0; y < 16; y++) {
       for (let x = 0; x < 16; x++) {
-        let tileType = TileType.GRASS;
 
-        if(y > 0 && this.tiles[(x + ((y - 1) * 16))].type != TileType.AIR){
-            tileType = TileType.DIRT;
-        }
-
-        if (tData[i] > 0.5) {
-          tileType = TileType.AIR;
-        }
+        let tileType = TileType[tData[i].toUpperCase()]
 
         this.tiles.push(
-          new Tile(this.app, this.scale, chunkX + x, chunkY + y, tileType)
+          new Tile(this.app, this.scale, chunkX + x, chunkY + y, this.x, this.y, tileType)
         );
 
         i++;

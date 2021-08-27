@@ -1,20 +1,38 @@
 const path = require("path");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+// webpack needs to be explicitly required
 const webpack = require("webpack");
 
 module.exports = {
-  entry: "./src/index.js",
-  optimization: {
-    minimize: true
-  },
+  stats: { errorDetails: true },
   target: "webworker",
   output: {
+    path: path.join(process.cwd(), "bin"),
     filename: "index.js",
-    path: path.resolve(__dirname, "bin"),
-    libraryTarget: "this",
+  },
+  // mode: 'production',
+  mode: "production",
+  devtool: "cheap-module-source-map",
+  optimization: {
+    sideEffects: true,
+    minimize: false
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js", ".json"],
+    mainFields: ['browser', 'module', 'main'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: "/node_modules/",
+      }
+    ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      URL: "core-js/web/url",
-    }),
-  ],
+		new NodePolyfillPlugin({
+			excludeAliases: ["console"]
+		})
+	]
 };

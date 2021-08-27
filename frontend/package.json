@@ -25,7 +25,8 @@
   ],
   "dependencies": {
     "pixi.js": "6.0.4",
-    "pixi.js-keyboard": "^1.1.6"
+    "pixi.js-keyboard": "^1.1.6",
+    "pixi.js-mouse": "^1.1.6"
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
@@ -50,6 +51,6 @@
     "typescript": "4.2.4",
     "webpack": "5.37.1",
     "webpack-cli": "4.7.0",
-    "webpack-dev-server": "3.11.2"
+    "webpack-dev-server": "^4.0.0"
   }
 }
