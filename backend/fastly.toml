@@ -1,0 +1,13 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["woverton+ecp@fastly.com"]
+description = "A minimal boilerplate application to bootstrap JavaScript projects on Compute@Edge"
+language = "javascript"
+manifest_version = 1
+name = "edgecraft"
+service_id = ""
+
+[local_server]
+
+  [local_server.backends]
