@@ -21,8 +21,10 @@ export default class Player {
     this.world = world;
     this.entity = null;
 
-    this.x = 1000;
-    this.y = 100;
+    const spawnPoint = this.world.getSpawnLocation();
+
+    this.x = spawnPoint.x;
+    this.y = spawnPoint.y;
 
     this.avatar = Math.floor(Math.random() * 10);
 
@@ -106,6 +108,9 @@ export default class Player {
         tile.setType(TileType.AIR);
       }
     }
+
+    // World Updates
+    this.world.updatePlayerChunkRadius(this.x, this.y);
   }
 
   async updatePosition() {

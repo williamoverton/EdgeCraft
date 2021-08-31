@@ -24,7 +24,7 @@ const HEIGHT = window.innerHeight;
 const app = new Application({
   width: WIDTH,
   height: HEIGHT,
-  backgroundColor: 0x5599dd,
+  backgroundColor: 0x111111,
   sharedTicker: true,
   sharedLoader: true,
 });

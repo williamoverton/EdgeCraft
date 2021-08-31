@@ -25,7 +25,7 @@ export default class Chunk {
 
     setTimeout(() => {
       this.update();
-    }, Math.random() * 5000)
+    }, Math.random() * 5000);
   }
 
   async make() {
@@ -48,11 +48,18 @@ export default class Chunk {
     let i = 0;
     for (let y = 0; y < 16; y++) {
       for (let x = 0; x < 16; x++) {
-
-        let tileType = TileType[tData[i].toUpperCase()]
+        let tileType = TileType[tData[i].toUpperCase()];
 
         this.tiles.push(
-          new Tile(this.app, this.scale, chunkX + x, chunkY + y, this.x, this.y, tileType)
+          new Tile(
+            this.app,
+            this.scale,
+            chunkX + x,
+            chunkY + y,
+            this.x,
+            this.y,
+            tileType
+          )
         );
 
         i++;
@@ -74,20 +81,28 @@ export default class Chunk {
 
     let tData = await req.json();
 
-    let i = 0;
-    for (let y = 0; y < 16; y++) {
-      for (let x = 0; x < 16; x++) {
+    if (this.active) {
+      let i = 0;
+      for (let y = 0; y < 16; y++) {
+        for (let x = 0; x < 16; x++) {
+          let tileType = TileType[tData[i].toUpperCase()];
 
-        let tileType = TileType[tData[i].toUpperCase()]
+          this.tiles[i].setType(tileType);
 
-        this.tiles[i].setType(tileType);
-
-        i++;
+          i++;
+        }
       }
     }
 
-    if(this.active){
+    if (this.active) {
       setTimeout(() => this.update(), 2000 + Math.random() * 500);
+    }
+  }
+
+  destroy() {
+    this.active = false;
+    for (let t of this.tiles) {
+      t.destroy();
     }
   }
 }

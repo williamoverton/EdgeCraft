@@ -81,8 +81,10 @@ export class Tile {
 
     this.app.stage.removeChild(this.entity.sprite);
     this.makeSprite();
+  }
 
-    console.log("Changing Type!");
+  destroy() {
+    this.app.stage.removeChild(this.entity.sprite);
   }
 }
 
