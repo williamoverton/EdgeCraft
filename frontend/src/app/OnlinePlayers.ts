@@ -59,6 +59,7 @@ export default class OnlinePlayers {
       const sprite = new Sprite(playerSprite);
       sprite.y = player.y;
       sprite.x = player.x;
+      sprite.anchor.x = 0.5;
       sprite.scale.set(this.scale * 0.9, this.scale * 0.8);
 
       this.sprites.push(sprite);

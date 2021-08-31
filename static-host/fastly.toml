@@ -1,0 +1,13 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["woverton+ecp@fastly.com"]
+description = "Static file server for EdgeCraft"
+language = "rust"
+manifest_version = 1
+name = "edgecraft-static"
+service_id = "2oV7gmyMUnKAhaRs3Mx2Tg"
+
+[local_server]
+
+  [local_server.backends]

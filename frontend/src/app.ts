@@ -13,7 +13,8 @@ import OnlinePlayers from "./app/OnlinePlayers";
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-(window as any).APP_BACKEND_URL = "http://127.0.0.1:7676";
+(window as any).APP_BACKEND_URL = "http://localhost:7676";
+// (window as any).APP_BACKEND_URL = "https://edgecraft-backend.edgecompute.app";
 
 // constants
 const WIDTH = window.innerWidth;

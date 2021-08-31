@@ -68,7 +68,7 @@ export default class Player {
 
     // Keyboard
     if (Keyboard.isKeyDown("ArrowLeft", "KeyA")) this.entity.dx += -1;
-    if (Keyboard.isKeyDown("ArrowDown", "KeyD")) this.entity.dx += 1;
+    if (Keyboard.isKeyDown("ArrowRight", "KeyD")) this.entity.dx += 1;
 
     if (this.entity.grounded) {
       if (Keyboard.isKeyDown("ArrowUp", "KeyW")) this.entity.dy = -20;
