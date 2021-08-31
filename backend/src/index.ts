@@ -95,7 +95,8 @@ async function getChunk(cx, cy) {
 }
 
 function makeChunk(cx, cy) {
-  const simplex = new SimplexNoise("EdgeCraft");
+  const heightMap = new SimplexNoise("EdgeCraft");
+  const blockType = new SimplexNoise("ComputeAtEdge");
 
   let chunkData: string[] = [];
 
@@ -103,18 +104,22 @@ function makeChunk(cx, cy) {
     for (let x = 0; x < 16; x++) {
       let nx = (cx + x / 16.0) * 2.0;
       let ny = (cy + y / 16.0) * 2.0;
-      chunkData.push(getTileTypeFromValue(simplex.noise2D(nx, ny)));
+      chunkData.push(getTileTypeFromValue(heightMap.noise2D(nx, ny), blockType.noise2D(nx / 5.0, ny / 5.0)));
     }
   }
 
   return chunkData;
 }
 
-function getTileTypeFromValue(value: number) {
-  if (value > 0.1) {
+function getTileTypeFromValue(heightValue: number, typeValue: number) {
+  if (heightValue > 0.1) {
     return "AIR";
   } else {
-    return "BRICK";
+    if (typeValue > 0.1) {
+      return "BRICK";
+    } else {
+      return "DIRT";
+    }
   }
 }
 

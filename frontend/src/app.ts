@@ -5,6 +5,7 @@ import {
   Loader,
   Text,
   Ticker,
+  Sprite,
 } from "pixi.js";
 
 import World from "./app/World";
@@ -13,8 +14,8 @@ import OnlinePlayers from "./app/OnlinePlayers";
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-(window as any).APP_BACKEND_URL = "http://localhost:7676";
-// (window as any).APP_BACKEND_URL = "https://edgecraft-backend.edgecompute.app";
+// (window as any).APP_BACKEND_URL = "http://localhost:7676";
+(window as any).APP_BACKEND_URL = "https://edgecraft-backend.edgecompute.app";
 
 // constants
 const WIDTH = window.innerWidth;
@@ -36,9 +37,11 @@ const ticker = Ticker.shared;
 // preload needed assets
 loader.add("grass", "/assets/img/grass.png");
 loader.add("dirt", "/assets/img/dirt.png");
+loader.add("dirt_air", "/assets/img/dirt_air.png");
 loader.add("brick", "/assets/img/brick.png");
 loader.add("dark_brick", "/assets/img/dark_brick.png");
 loader.add("playerSpriteSheet", "/assets/img/pirate_people.png");
+loader.add("shadow", "/assets/img/shadow.png");
 
 // when loader is ready
 loader.load(() => {
@@ -47,6 +50,16 @@ loader.load(() => {
   fps.scale.set(0.7, 0.7);
   fps.zIndex = 9999;
   app.stage.addChild(fps);
+
+  // create shadow effect
+  const shadowSprite = Loader.shared.resources.shadow.texture;
+  const shadow = new Sprite(shadowSprite);
+  const shadowScaleAmount = window.innerWidth / shadow.width;
+  shadow.scale.set(shadowScaleAmount, shadowScaleAmount);
+  shadow.zIndex = 9998;
+  app.stage.addChild(shadow);
+  
+  // Main game
 
   app.stage.sortableChildren = true;
 
@@ -62,5 +75,8 @@ loader.load(() => {
     fps.text = `FPS: ${ticker.FPS.toFixed(2)}`;
     fps.position.x = player.entity.sprite.position.x - window.innerWidth / 2;
     fps.position.y = player.entity.sprite.position.y - window.innerHeight / 2;
+
+    shadow.position.x = player.entity.sprite.position.x - window.innerWidth / 2;
+    shadow.position.y = player.entity.sprite.position.y - window.innerHeight / 2;
   });
 });
